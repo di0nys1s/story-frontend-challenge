@@ -1,17 +1,26 @@
 <template>
-  <li class="c-list-item" :key="index">
-    {{ title }}
-  </li>
+  <button
+    @click="handleListItemClick(item)"
+    class="c-list-item"
+    :key="`${item.id}-${item.value}`"
+  >
+    {{ item.name }}
+  </button>
 </template>
 
 <script lang="ts">
+import { IListItem } from "@/interfaces";
 import { defineComponent } from "vue";
 
+import "./ListItem.css";
+
 export default defineComponent({
-  name: "ListItem",
-  props: {
-    index: String,
-    title: String,
+  methods: {
+    handleListItemClick(item: IListItem) {
+      this.$emit("handleListItemClick", item);
+    },
   },
+  name: "ListItem",
+  props: ["item", "onClick"],
 });
 </script>

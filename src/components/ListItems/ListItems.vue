@@ -1,22 +1,30 @@
 <template>
-  <ul class="c-list">
-    <ListItem v-for="(item, key) in items" :key="`${item}-${key}`">
-      {{ item }}
-    </ListItem>
-  </ul>
+  <div role="list" class="c-list">
+    <ListItem
+      v-for="(item, key) in items"
+      :item="item"
+      :key="`${item}-${key}`"
+      @handleListItemClick="handleListItemClick"
+    />
+  </div>
 </template>
 
 <script lang="ts">
+import { IListItem } from "@/interfaces";
 import { defineComponent } from "vue";
 import ListItem from "../ListItem/ListItem.vue";
+import "./ListItems.css";
 
 export default defineComponent({
   components: {
     ListItem,
   },
-  name: "ListItems",
-  props: {
-    items: Array,
+  methods: {
+    handleListItemClick(item: IListItem) {
+      this.$emit("handleListItemClick", item);
+    },
   },
+  name: "ListItems",
+  props: ["items"],
 });
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div class="c-dashboard-page">
-    <h1>Autocomplete</h1>
+    <h1 class="c-dashboard-page__title">Search {{ searchItem }}</h1>
 
     <div class="c-dashboard-page__select-container">
       <span
@@ -11,42 +11,43 @@
           searchItem ? { visibility: 'hidden' } : { visibility: 'visible' },
         ]"
       >
-        Please select your search item</span
+        Please select your search category</span
       >
 
-      <div class="c-dashboard-page__search">
-        <select
-          aria-labelledby="Search select"
-          class="c-dashboard-page__select"
-          title="Search item"
-          selected="Please select"
-          @change="getData"
-          v-model="searchItem"
-        >
-          <option value="">Please select</option>
-          <option value="cities">Cities</option>
-          <option value="books">Books</option>
-        </select>
-      </div>
+      <select
+        aria-labelledby="Search select"
+        class="c-dashboard-page__select"
+        title="Search item"
+        selected="Please select"
+        @change="getData"
+        v-model="searchItem"
+      >
+        <option value="">Please select</option>
+        <option value="cities">Cities</option>
+        <option value="books">Books</option>
+      </select>
     </div>
 
-    <span> {{ selectedSearchItem }} </span>
+    <span
+      v-if="searchItem && selectedListItemValue"
+      class="c-dashboard-page__selected-item"
+      >{{ selectedListItemValue }} selected</span
+    >
 
     <AutocompleteSearch
+      @handleListItemClick="handleListItemClick"
       :autocompleteSearchList="searchList"
-      :search-item="searchItem"
+      :isSearchItemSelected="this.isSearchItemSelected"
+      :searchItem="searchItem"
+      :searchFilterCharacterCount="searchFilterCharacterCount"
     />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, toRaw } from "vue";
-// import ListItems from "../../ListItems/ListItems.vue";
-// import ListItem from "../../ListItem/ListItem.vue";
-import { IBook } from "@/interfaces";
+import { IBook, IListItem } from "@/interfaces";
 import "./DashboardPage.css";
-
-import { IAutocompleteSearchList } from "@/components/AutocompleteSearch/AutocompleteSearch.interfaces";
 
 import AutocompleteSearch from "@/components/AutocompleteSearch/AutocompleteSearch.vue";
 
@@ -55,10 +56,11 @@ export default defineComponent({
     AutocompleteSearch,
   },
   data: () => ({
-    searchList: [] as IAutocompleteSearchList[],
-    searchFilter: "",
+    searchList: [] as IListItem[],
     searchItem: "",
-    selectedSearchItem: "",
+    searchFilterCharacterCount: Number,
+    tags: [] as string[],
+    selectedListItemValue: "",
   }),
   methods: {
     capitalizeFirstLetter(string: string) {
@@ -69,8 +71,6 @@ export default defineComponent({
         return;
       }
 
-      this.searchFilter = "";
-
       try {
         const res = await fetch(`http://localhost:3000/${this.searchItem}`);
         const data = await res.json();
@@ -79,13 +79,13 @@ export default defineComponent({
           (item: IBook, index: number) => {
             if (typeof item === "string") {
               return {
-                id: String(index + 1),
+                id: String((index += 1)),
                 name: item,
                 value: item,
               };
             } else {
               return {
-                id: String(index + 1),
+                id: String((index += 1)),
                 name: `${item.title} by ${item.author}`,
                 value: item.title,
               };
@@ -98,28 +98,10 @@ export default defineComponent({
         console.log(error);
       }
     },
-    setListItem(item: IAutocompleteSearchList) {
-      this.selectedSearchItem = `${item.name}`;
+    handleListItemClick({ name }: IListItem) {
+      this.selectedListItemValue = name;
     },
   },
   name: "DashboardPage",
 });
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-</style>

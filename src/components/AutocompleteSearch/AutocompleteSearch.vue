@@ -5,7 +5,7 @@
       ref="autocompleteInput"
       id="City search"
       :class="
-        searchFilter.length > 2 && filteredList?.length
+        searchFilter.length >= this.searchCharacterLimit && filteredList?.length
           ? 'c-autocomplete__input c-autocomplete-input--has-list'
           : 'c-autocomplete__input'
       "
@@ -15,29 +15,30 @@
     />
 
     <span
-      class="c-autocomplete__list-item"
-      v-if="searchFilter.length >= 3 && !filteredList?.length"
+      class="c-autocomplete__message"
+      v-if="
+        searchFilter.length >= this.searchCharacterLimit &&
+        !filteredList?.length
+      "
       >There is no results</span
     >
 
     <span
-      class="c-autocomplete__list-item"
-      v-if="searchFilter && searchFilter.length < 3"
+      class="c-autocomplete__message"
+      v-if="searchFilter && searchFilter.length < searchCharacterLimit"
     >
-      You need to enter at least 3 characters
+      You need to enter at least {{ searchCharacterLimit }} characters
     </span>
   </div>
 
-  <div role="list" v-if="searchFilter.length >= 3" class="c-autocomplete__list">
-    <button
-      role="listitem"
-      class="c-autocomplete__list-item"
-      v-for="item in filteredList"
-      :key="item.value"
-    >
-      {{ item.name }}
-    </button>
-  </div>
+  <ListItems
+    v-if="
+      searchFilter.length >= searchCharacterLimit &&
+      autocompleteSearchList.length
+    "
+    :items="filteredList"
+    @handleListItemClick="handleListItemClick"
+  />
 
   <div
     v-if="filteredList && filteredList.length > 5 && searchFilter.length >= 3"
@@ -49,23 +50,32 @@
 
 <script lang="ts">
 import { defineComponent, toRaw } from "vue";
-
-import { IAutocompleteSearchList } from "./AutocompleteSearch.interfaces";
+import ListItems from "../ListItems/ListItems.vue";
+import { IListItem } from "@/interfaces";
+import { autocompleteSearchConstants } from "./AutocompleteSearch.constants";
 
 import "./AutocompleteSearch.css";
 
 export default defineComponent({
+  components: {
+    ListItems,
+  },
   data: () => ({
     searchFilter: "",
+    searchFilterCharacterCount:
+      autocompleteSearchConstants.searchFilterCharacterLimit,
   }),
   computed: {
     filteredList() {
-      if (this.searchFilter.length < 3 || !this.searchFilter) {
+      if (
+        this.searchFilter.length < this.searchCharacterLimit ||
+        !this.searchFilter
+      ) {
         return toRaw(this.autocompleteSearchList);
       }
 
       return toRaw(
-        this.autocompleteSearchList?.filter((item: IAutocompleteSearchList) => {
+        this.autocompleteSearchList?.filter((item: IListItem) => {
           return item.value
             .trim()
             .toLowerCase()
@@ -73,18 +83,25 @@ export default defineComponent({
         })
       );
     },
+    searchCharacterLimit() {
+      return this.searchFilterCharacterCount;
+    },
   },
   directives: {
     focus: {
-      mounted(el) {
+      updated(el) {
         el.focus();
       },
     },
   },
-  name: "AutocompleteSearch",
-  props: {
-    autocompleteSearchList: Array as () => IAutocompleteSearchList[],
-    searchItem: String,
+  methods: {
+    handleListItemClick(item: IListItem) {
+      this.$emit("handleListItemClick", item);
+
+      this.searchFilter = "";
+    },
   },
+  name: "AutocompleteSearch",
+  props: ["autocompleteSearchList", "searchItem"],
 });
 </script>

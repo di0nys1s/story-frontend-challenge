@@ -1,83 +1,17 @@
-.c-autocomplete {
-  display: flex;
-  flex-direction: column;
-  margin: auto;
-  width: 20.125rem;
-  padding: 1rem;
-  padding-bottom: 0;
-}
-
-.c-autocomplete__input {
-  border: 1px solid #ccc;
-  border-radius: 0.3rem;
-  padding: 0.5rem 0.75rem;
-}
-
-.c-autocomplete-input--has-list:focus {
-  outline: none;
-}
-
-.c-autocomplete-input--has-list,
-.c-autocomplete-input--has-list:focus {
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
-.c-autocomplete__list {
-  border: 1px solid #ccc;
-  border-top: none;
-  border-bottom: none;
-  display: flex;
-  flex-direction: column;
-  margin: auto;
-  width: 20rem;
-  max-height: 8.85rem;
-  overflow-y: scroll;
-}
-
-.c-autocomplete__list-item {
-  border: none;
-  cursor: pointer;
-  padding: 0.4rem;
-  border-bottom: 1px solid #ccc;
-  background-color: #fff;
-}
-
-.c-autocomplete__list-item:hover {
-  background-color: #eee;
-}
-
-.c-autocomplete__list-item-count {
-  width: 20rem;
-  border: 1px solid #ccc;
-  border-top: none;
-  border-bottom-left-radius: 0.3rem;
-  border-bottom-right-radius: 0.3rem;
-  background-color: #ccc;
-  font-weight: 600;
-  margin: auto;
-}
-
 .c-dashboard-page {
-  padding-top: 2rem;
-  width: 30rem;
+  padding-top: 1rem;
+  max-width: 100%;
   margin: auto;
-  margin-top: 5rem;
+  margin-top: 3rem;
   height: 30rem;
   background-color: #eee;
-}
-
-.c-dashboard-page__search {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 .c-dashboard-page__select-container {
   display: flex;
   flex-direction: column;
   justify-content: left;
-  width: 20rem;
+  max-width: 20rem;
   margin: auto;
 }
 
@@ -87,16 +21,31 @@
   color: #333;
   cursor: pointer;
   padding: 0.5rem;
-  width: 20rem;
 }
 
 .c-dashboard-page__select-label-container {
   display: flex;
   justify-content: left;
-  width: 20rem;
   margin: auto;
+}
+
+.c-dashboard-page__selected-item {
+  display: block;
+  margin-top: 1rem;
+  text-align: center;
+  width: 100%;
 }
 
 .c-dashboard-page__select-label {
   text-align: left;
+}
+
+.c-dashboard-page__title {
+  text-align: center;
+}
+
+@media screen and (min-width: 48em) {
+  .c-dashboard-page {
+    max-width: 75%;
+  }
 }

@@ -1,0 +1,11 @@
+.c-list {
+  border: 1px solid #ccc;
+  border-top: none;
+  border-bottom: none;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  max-width: 20rem;
+  max-height: 8.85rem;
+  overflow-y: scroll;
+}
