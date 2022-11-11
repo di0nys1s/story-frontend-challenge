@@ -44,7 +44,7 @@
     v-if="filteredList && filteredList.length > 5 && searchFilter.length >= 3"
     class="c-autocomplete__list-item-count"
   >
-    {{ filteredList.length }} {{ searchItem }} results
+    {{ filteredList.length }} {{ searchItem }} total
   </div>
 </template>
 

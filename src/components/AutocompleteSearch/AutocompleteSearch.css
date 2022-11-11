@@ -30,6 +30,8 @@
   border-top: none;
   border-bottom-left-radius: 0.3rem;
   border-bottom-right-radius: 0.3rem;
+  display: flex;
+  justify-content: center;
   background-color: #ccc;
   font-weight: 600;
   margin: auto;
