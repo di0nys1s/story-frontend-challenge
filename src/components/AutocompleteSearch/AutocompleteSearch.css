@@ -1,0 +1,59 @@
+.c-autocomplete {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  width: 20.125rem;
+  padding: 1rem;
+  padding-bottom: 0;
+}
+
+.c-autocomplete__input {
+  border: 1px solid #ccc;
+  border-radius: 0.3rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.c-autocomplete-input--has-list:focus {
+  outline: none;
+}
+
+.c-autocomplete-input--has-list,
+.c-autocomplete-input--has-list:focus {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.c-autocomplete__list {
+  border: 1px solid #ccc;
+  border-top: none;
+  border-bottom: none;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  width: 20rem;
+  max-height: 8.85rem;
+  overflow-y: scroll;
+}
+
+.c-autocomplete__list-item {
+  border: none;
+  cursor: pointer;
+  padding: 0.4rem;
+  border-bottom: 1px solid #ccc;
+  background-color: #fff;
+}
+
+.c-autocomplete__list-item:hover {
+  background-color: #eee;
+}
+
+.c-autocomplete__list-item-count {
+  width: 20rem;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-bottom-left-radius: 0.3rem;
+  border-bottom-right-radius: 0.3rem;
+  background-color: #ccc;
+  font-weight: 600;
+  margin: auto;
+}
