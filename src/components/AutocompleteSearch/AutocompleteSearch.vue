@@ -14,21 +14,25 @@
       placeholder="Search..."
     />
 
-    <span
-      class="c-autocomplete__message"
+    <MessageBox
       v-if="
         searchFilter.length >= this.searchCharacterLimit &&
         !filteredList?.length
       "
-      >There is no results</span
-    >
+      message="There is no results'
+      "
+    />
 
-    <span
-      class="c-autocomplete__message"
+    <MessageBox
       v-if="searchFilter && searchFilter.length < searchCharacterLimit"
-    >
-      You need to enter at least {{ searchCharacterLimit }} characters
-    </span>
+      :message="
+        'You need to enter at least' +
+        ' ' +
+        searchCharacterLimit +
+        ' ' +
+        ' characters'
+      "
+    />
   </div>
 
   <ListItems
@@ -40,17 +44,17 @@
     @handleListItemClick="handleListItemClick"
   />
 
-  <div
+  <MessageBox
     v-if="filteredList && filteredList.length > 5 && searchFilter.length >= 3"
-    class="c-autocomplete__list-item-count"
-  >
-    {{ filteredList.length }} {{ searchItem }} total
-  </div>
+    :message="filteredList.length + ' ' + searchItem + ' total'"
+    additionalClass="c-autocomplete__list-item-count"
+  />
 </template>
 
 <script lang="ts">
 import { defineComponent, toRaw } from "vue";
 import ListItems from "../ListItems/ListItems.vue";
+import MessageBox from "../MessageBox/MessageBox.vue";
 import { IListItem } from "@/interfaces";
 import { autocompleteSearchConstants } from "./AutocompleteSearch.constants";
 
@@ -59,6 +63,7 @@ import "./AutocompleteSearch.css";
 export default defineComponent({
   components: {
     ListItems,
+    MessageBox,
   },
   data: () => ({
     searchFilter: "",
