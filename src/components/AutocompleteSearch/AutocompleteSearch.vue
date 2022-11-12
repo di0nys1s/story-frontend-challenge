@@ -100,9 +100,6 @@ export default defineComponent({
       return this.searchFilterCharacterCount;
     },
   },
-  updated() {
-    this.searchList = this.filteredList;
-  },
   methods: {
     capitaliseFirstLetter(value: string) {
       return value.charAt(0).toUpperCase() + value.slice(1);
@@ -111,9 +108,6 @@ export default defineComponent({
       this.$emit("handleListItemClick", item);
 
       this.searchFilter = "";
-    },
-    handleBlurAutocompleteInput(searchList: IListItem[]) {
-      this.$emit("handleBlurAutocompleteInput", searchList);
     },
     handleChangeAutocompleteInput() {
       this.$emit("handleChangeAutocompleteSearchValue", this.searchFilter);

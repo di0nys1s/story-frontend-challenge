@@ -68,35 +68,33 @@ export default defineComponent({
   }),
   methods: {
     async getData(searchItem: string) {
-      try {
-        const res = await fetch(
-          // http://localhost:3000
-          `${process.env.VUE_APP_DATA_PORT}/${searchItem}`
-        );
-        const data = await res.json();
-
-        const autocompleteSearchList = data.map(
-          (item: IBook, index: number) => {
-            if (typeof item === "string") {
-              return {
-                id: String((index += 1)),
-                name: item,
-                value: item,
-              };
-            } else {
-              return {
-                id: String((index += 1)),
-                name: `${item.title} by ${item.author}`,
-                value: item.title,
-              };
+      // http://localhost:3000
+      await fetch(`${process.env.VUE_APP_DATA_PORT}/${searchItem}`)
+        .then((response) => response.json())
+        .then((data) => {
+          const autocompleteSearchList = data.map(
+            (item: IBook, index: number) => {
+              if (typeof item === "string") {
+                return {
+                  id: String((index += 1)),
+                  name: item,
+                  value: item,
+                };
+              } else {
+                return {
+                  id: String((index += 1)),
+                  name: `${item.title} by ${item.author}`,
+                  value: item.title,
+                };
+              }
             }
-          }
-        );
+          );
 
-        this.searchList = toRaw(autocompleteSearchList);
-      } catch (error) {
-        console.log(error);
-      }
+          this.searchList = toRaw(autocompleteSearchList);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     handleFindMatchedItemInStringArray(array: string[], value: string) {
       return array.find((item) => item === value);
@@ -139,8 +137,6 @@ export default defineComponent({
       }
 
       _.debounce(this.getData, 1000)(this.searchItem);
-
-      // this.getData(this.searchItem);
     },
     handleSetAutocompleteSearchCategory(category: string) {
       this.searchItem = category;
