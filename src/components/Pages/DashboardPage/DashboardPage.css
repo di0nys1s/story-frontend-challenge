@@ -1,10 +1,16 @@
 .c-dashboard-page {
-  padding-top: 1rem;
+  background-color: #eee;
+  height: 30rem;
   max-width: 100%;
   margin: auto;
   margin-top: 3rem;
-  height: 30rem;
-  background-color: #eee;
+  padding-top: 1rem;
+  position: relative;
+}
+
+.c-dashboard-page__main {
+  max-width: 20rem;
+  margin: auto;
 }
 
 .c-dashboard-page__select-container {
@@ -44,8 +50,25 @@
   text-align: center;
 }
 
+.c-tags {
+  display: flex;
+  margin: auto;
+  padding: 0.5rem 0;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.c-tag {
+  background-color: #172893;
+  border: 1px solid #ccc;
+  border-radius: 0.3rem;
+  color: #fff;
+  list-style-type: none;
+  padding: 0.5rem 0.75rem;
+}
+
 @media screen and (min-width: 48em) {
   .c-dashboard-page {
-    max-width: 75%;
+    max-width: 55%;
   }
 }

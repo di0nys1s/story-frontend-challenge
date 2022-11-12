@@ -1,9 +1,15 @@
 <template>
-  <div class="c-autocomplete" v-if="searchItem">
+  <div class="c-autocomplete">
+    <label class="c-autocomplete__label" :for="searchCategory">
+      {{ capitaliseFirstLetter(searchCategory) }}
+    </label>
     <input
-      v-focus
+      autofocus
+      @input="handleChangeAutocompleteInput"
+      @focus="handleFocusAutocompleteInput"
+      :name="searchCategory"
       ref="autocompleteInput"
-      id="City search"
+      :id="searchCategory"
       :class="
         searchFilter.length >= this.searchCharacterLimit && filteredList?.length
           ? 'c-autocomplete__input c-autocomplete-input--has-list'
@@ -33,22 +39,23 @@
         ' characters'
       "
     />
+
+    <ListItems
+      additionalClass="c-autocomplete__list"
+      v-if="
+        searchFilter.length >= searchCharacterLimit &&
+        autocompleteSearchList.length
+      "
+      :items="filteredList"
+      @handleListItemClick="handleListItemClick"
+    />
+
+    <MessageBox
+      v-if="filteredList && filteredList.length > 5 && searchFilter.length >= 3"
+      :message="filteredList.length + ' ' + ' total'"
+      additionalClass="c-autocomplete__list-item-count"
+    />
   </div>
-
-  <ListItems
-    v-if="
-      searchFilter.length >= searchCharacterLimit &&
-      autocompleteSearchList.length
-    "
-    :items="filteredList"
-    @handleListItemClick="handleListItemClick"
-  />
-
-  <MessageBox
-    v-if="filteredList && filteredList.length > 5 && searchFilter.length >= 3"
-    :message="filteredList.length + ' ' + searchItem + ' total'"
-    additionalClass="c-autocomplete__list-item-count"
-  />
 </template>
 
 <script lang="ts">
@@ -67,6 +74,7 @@ export default defineComponent({
   },
   data: () => ({
     searchFilter: "",
+    searchList: [] as IListItem[],
     searchFilterCharacterCount:
       autocompleteSearchConstants.searchFilterCharacterLimit,
   }),
@@ -92,21 +100,31 @@ export default defineComponent({
       return this.searchFilterCharacterCount;
     },
   },
-  directives: {
-    focus: {
-      updated(el) {
-        el.focus();
-      },
-    },
+  updated() {
+    this.searchList = this.filteredList;
   },
   methods: {
+    capitaliseFirstLetter(value: string) {
+      return value.charAt(0).toUpperCase() + value.slice(1);
+    },
     handleListItemClick(item: IListItem) {
       this.$emit("handleListItemClick", item);
 
       this.searchFilter = "";
     },
+    handleBlurAutocompleteInput(searchList: IListItem[]) {
+      this.$emit("handleBlurAutocompleteInput", searchList);
+    },
+    handleChangeAutocompleteInput() {
+      this.$emit("handleChangeAutocompleteSearchValue", this.searchFilter);
+    },
+    handleFocusAutocompleteInput(event: FocusEvent) {
+      const inputName = (event.target as HTMLInputElement).name;
+
+      this.$emit("handleSetAutocompleteSearchCategory", inputName);
+    },
   },
   name: "AutocompleteSearch",
-  props: ["autocompleteSearchList", "searchItem"],
+  props: ["autocompleteSearchList", "searchCategory"],
 });
 </script>

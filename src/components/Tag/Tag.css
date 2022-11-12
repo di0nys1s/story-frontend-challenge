@@ -1,0 +1,8 @@
+.c-tag {
+  background-color: #172893;
+  border: 1px solid #ccc;
+  border-radius: 0.3rem;
+  color: #fff;
+  list-style-type: none;
+  padding: 0.5rem 0.75rem;
+}

@@ -1,5 +1,5 @@
 <template>
-  <div role="list" class="c-list">
+  <div role="list" :class="['c-list', additionalClass]">
     <ListItem
       v-for="(item, key) in items"
       :item="item"
@@ -25,6 +25,6 @@ export default defineComponent({
     },
   },
   name: "ListItems",
-  props: ["items"],
+  props: ["items", "additionalClass"],
 });
 </script>

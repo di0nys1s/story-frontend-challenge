@@ -5,6 +5,7 @@
   max-width: 20.125rem;
   padding: 1rem 0;
   padding-bottom: 0;
+  position: relative;
 }
 
 .c-autocomplete__input {
@@ -12,6 +13,21 @@
   max-width: 20rem;
   border-radius: 0.3rem;
   padding: 0.5rem 0.75rem;
+}
+
+.c-autocomplete__input:focus {
+  outline: none;
+  border-color: #f58680;
+}
+
+.c-autocomplete__list {
+  max-width: 20rem;
+  max-height: 8.85rem;
+  overflow-y: scroll;
+  position: absolute;
+  top: 4.7rem;
+  width: 100%;
+  z-index: 2;
 }
 
 .c-autocomplete-input--has-list:focus {
@@ -24,8 +40,13 @@
   border-bottom-right-radius: 0;
 }
 
+.c-autocomplete__label {
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
 .c-autocomplete__list-item-count {
-  max-width: 20rem;
   border: 1px solid #ccc;
   border-top: none;
   border-bottom-left-radius: 0.3rem;
@@ -35,6 +56,9 @@
   background-color: #ccc;
   font-weight: 600;
   margin: auto;
+  position: absolute;
+  width: 19.4rem;
+  top: 13.5rem;
 }
 
 .c-autocomplete__message {

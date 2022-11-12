@@ -1,45 +1,44 @@
 <template>
   <div class="c-dashboard-page">
-    <h1 class="c-dashboard-page__title">Search {{ searchItem }}</h1>
+    <header class="c-dashboard-page__header">
+      <h1 class="c-dashboard-page__title">Search your category</h1>
+    </header>
 
-    <div class="c-dashboard-page__select-container">
-      <span
-        aria-label="Search select"
-        class="c-dashboard-page__select-label"
-        :aria-hidden="searchItem ? true : false"
-        :style="[
-          searchItem ? { visibility: 'hidden' } : { visibility: 'visible' },
-        ]"
-      >
-        Please select your search category</span
-      >
+    <main class="c-dashboard-page__main">
+      <AutocompleteSearch
+        @handleListItemClick="handleListItemClick"
+        @handleChangeAutocompleteSearchValue="
+          handleChangeAutocompleteSearchValue
+        "
+        @handleSetAutocompleteSearchCategory="
+          handleSetAutocompleteSearchCategory
+        "
+        :autocompleteSearchList="searchList"
+        searchCategory="cities"
+        :searchFilterCharacterCount="searchFilterCharacterCount"
+      />
 
-      <select
-        aria-labelledby="Search select"
-        class="c-dashboard-page__select"
-        title="Search item"
-        selected="Please select"
-        @change="getData"
-        v-model="searchItem"
-      >
-        <option value="">Please select</option>
-        <option value="cities">Cities</option>
-        <option value="books">Books</option>
-      </select>
-    </div>
+      <Tags :items="selectedCitiesList" />
 
-    <span
-      v-if="searchItem && selectedListItemValue"
-      class="c-dashboard-page__selected-item"
-      >{{ selectedListItemValue }} selected</span
-    >
+      <AutocompleteSearch
+        @handleListItemClick="handleListItemClick"
+        @handleChangeAutocompleteSearchValue="
+          handleChangeAutocompleteSearchValue
+        "
+        @handleSetAutocompleteSearchCategory="
+          handleSetAutocompleteSearchCategory
+        "
+        :autocompleteSearchList="searchList"
+        searchCategory="books"
+        :searchFilterCharacterCount="searchFilterCharacterCount"
+      />
 
-    <AutocompleteSearch
-      @handleListItemClick="handleListItemClick"
-      :autocompleteSearchList="searchList"
-      :isSearchItemSelected="this.isSearchItemSelected"
-      :searchItem="searchItem"
-      :searchFilterCharacterCount="searchFilterCharacterCount"
+      <Tags :items="selectedBooksList" />
+    </main>
+
+    <Footer
+      creator="Burak Seyhan"
+      creatorLink="https://github.com/di0nys1s/story-frontend-challenge"
     />
   </div>
 </template>
@@ -48,31 +47,28 @@
 import { defineComponent, toRaw } from "vue";
 import { IBook, IListItem } from "@/interfaces";
 import "./DashboardPage.css";
-
 import AutocompleteSearch from "@/components/AutocompleteSearch/AutocompleteSearch.vue";
+import Footer from "@/components/Footer/Footer.vue";
+import Tags from "@/components/Tags/Tags.vue";
 
 export default defineComponent({
   components: {
     AutocompleteSearch,
+    Footer,
+    Tags,
   },
   data: () => ({
     searchList: [] as IListItem[],
     searchItem: "",
+    searchFilter: "",
     searchFilterCharacterCount: Number,
-    tags: [] as string[],
-    selectedListItemValue: "",
+    selectedCitiesList: [],
+    selectedBooksList: [],
   }),
   methods: {
-    capitalizeFirstLetter(string: string) {
-      return string.charAt(0).toUpperCase() + string.slice(1);
-    },
-    async getData() {
-      if (!this.searchItem) {
-        return;
-      }
-
+    async getData(searchItem: string) {
       try {
-        const res = await fetch(`http://localhost:3000/${this.searchItem}`);
+        const res = await fetch(`http://localhost:3000/${searchItem}`);
         const data = await res.json();
 
         const autocompleteSearchList = data.map(
@@ -98,8 +94,50 @@ export default defineComponent({
         console.log(error);
       }
     },
+    handleFindMatchedItemInStringArray(array: string[], value: string) {
+      return array.find((item) => item === value);
+    },
     handleListItemClick({ name }: IListItem) {
-      this.selectedListItemValue = name;
+      switch (this.searchItem) {
+        case "cities":
+          if (
+            this.handleFindMatchedItemInStringArray(
+              toRaw(this.selectedCitiesList),
+              name
+            )
+          ) {
+            return;
+          }
+
+          this.selectedCitiesList.push(name);
+          break;
+        case "books":
+          if (
+            this.handleFindMatchedItemInStringArray(
+              toRaw(this.selectedBooksList),
+              name
+            )
+          ) {
+            return;
+          }
+
+          this.selectedBooksList.push(name);
+          break;
+        default:
+          break;
+      }
+    },
+    handleChangeAutocompleteSearchValue(value: string) {
+      this.searchFilter = value;
+
+      if (value.length < 3) {
+        return;
+      }
+
+      this.getData(this.searchItem);
+    },
+    handleSetAutocompleteSearchCategory(category: string) {
+      this.searchItem = category;
     },
   },
   name: "DashboardPage",

@@ -5,7 +5,4 @@
   display: flex;
   flex-direction: column;
   margin: auto;
-  max-width: 20rem;
-  max-height: 8.85rem;
-  overflow-y: scroll;
 }
