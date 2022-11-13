@@ -6,7 +6,9 @@
     <input
       autofocus
       @input="handleChangeAutocompleteInput"
+      @blur="handleCloseAutocompleteList"
       @focus="handleFocusAutocompleteInput"
+      @keyup="handleKeyUpAutocompleteInput"
       :name="searchCategory"
       ref="autocompleteInput"
       :id="searchCategory"
@@ -116,6 +118,19 @@ export default defineComponent({
       const inputName = (event.target as HTMLInputElement).name;
 
       this.$emit("handleSetAutocompleteSearchCategory", inputName);
+    },
+    handleCloseAutocompleteList() {
+      this.searchFilter = "";
+      this.filteredList = [];
+    },
+    handleKeyUpAutocompleteInput(event: KeyboardEvent) {
+      console.log("Pressed", event.key);
+
+      if (event.key !== "Escape") {
+        return;
+      }
+
+      this.handleCloseAutocompleteList();
     },
   },
   name: "AutocompleteSearch",
