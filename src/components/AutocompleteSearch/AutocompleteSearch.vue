@@ -25,8 +25,7 @@
         searchFilter.length >= this.searchCharacterLimit &&
         !filteredList?.length
       "
-      message="There is no results'
-      "
+      message="There is no results"
     />
 
     <MessageBox
@@ -42,16 +41,17 @@
 
     <ListItems
       additionalClass="c-autocomplete__list"
-      v-if="
-        searchFilter.length >= searchCharacterLimit &&
-        autocompleteSearchList.length
-      "
+      v-if="searchFilter.length >= searchCharacterLimit"
       :items="filteredList"
       @handleListItemClick="handleListItemClick"
     />
 
     <MessageBox
-      v-if="filteredList && filteredList.length > 5 && searchFilter.length >= 3"
+      v-if="
+        filteredList &&
+        filteredList.length > 5 &&
+        searchFilter.length >= searchFilterCharacterCount
+      "
       :message="filteredList.length + ' ' + ' total'"
       additionalClass="c-autocomplete__list-item-count"
     />

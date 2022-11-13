@@ -2,7 +2,12 @@
   <footer class="c-footer">
     <p class="c-footer__text">
       Made with
-      <img class="c-footer-logo" src="@/assets/passion.webp" alt="passion" />
+      <img
+        class="c-footer-logo"
+        src="@/assets/passion.webp"
+        alt="passion"
+        loading="lazy"
+      />
       by
       <a
         class="c-footer__link"

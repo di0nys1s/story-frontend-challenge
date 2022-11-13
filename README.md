@@ -1,29 +1,5 @@
-# story-fe-challenge
-
-## Project setup
-```
-yarn install
-```
-
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
-
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Run your unit tests
-```
-yarn test:unit
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Autocomplete challenge
+* `yarn install` to setup the project
+* `npx json-server --watch data/db.json` in another console to run the mock `json-server`
+* `yarn serve` to compile the project
+* `yarn test:unit` to run the unit tests

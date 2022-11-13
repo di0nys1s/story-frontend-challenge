@@ -50,7 +50,6 @@ import "./DashboardPage.css";
 import AutocompleteSearch from "@/components/AutocompleteSearch/AutocompleteSearch.vue";
 import Footer from "@/components/Footer/Footer.vue";
 import Tags from "@/components/Tags/Tags.vue";
-import _ from "lodash";
 
 export default defineComponent({
   components: {
@@ -68,8 +67,8 @@ export default defineComponent({
   }),
   methods: {
     async getData(searchItem: string) {
-      // http://localhost:3000
-      await fetch(`${process.env.VUE_APP_DATA_PORT}/${searchItem}`)
+      // Better practice to retrieve the host url from the environment variables (etc process.env.VUE_APP_API_URL)
+      await fetch(`http://localhost:3000/${searchItem}`)
         .then((response) => response.json())
         .then((data) => {
           const autocompleteSearchList = data.map(
@@ -132,11 +131,11 @@ export default defineComponent({
     handleChangeAutocompleteSearchValue(value: string) {
       this.searchFilter = value;
 
-      if (value.length < 3) {
+      if (value.length < this.searchFilterCharacterCount) {
         return;
       }
 
-      _.debounce(this.getData, 1000)(this.searchItem);
+      this.getData(this.searchItem);
     },
     handleSetAutocompleteSearchCategory(category: string) {
       this.searchItem = category;
