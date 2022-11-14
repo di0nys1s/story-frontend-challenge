@@ -5,21 +5,20 @@
     </label>
     <input
       autofocus
-      @input="handleChangeAutocompleteInput"
-      @blur="handleCloseAutocompleteList"
-      @focus="handleFocusAutocompleteInput"
-      @keyup="handleKeyUpAutocompleteInput"
-      :name="searchCategory"
-      ref="autocompleteInput"
-      :id="searchCategory"
       :class="
         searchFilter.length >= this.searchCharacterLimit && filteredList?.length
           ? 'c-autocomplete__input c-autocomplete-input--has-list'
           : 'c-autocomplete__input'
       "
-      v-model="searchFilter"
-      type="text"
+      :id="searchCategory"
+      :name="searchCategory"
       placeholder="Search..."
+      type="text"
+      v-model="searchFilter"
+      @blur="handleCloseAutocompleteList"
+      @focus="handleFocusAutocompleteInput"
+      @input="handleChangeAutocompleteInput"
+      @keyup="handleKeyUpAutocompleteInput"
     />
 
     <MessageBox
@@ -27,7 +26,7 @@
         searchFilter.length >= this.searchCharacterLimit &&
         !filteredList?.length
       "
-      message="There is no results"
+      message="There are no results"
     />
 
     <MessageBox
@@ -37,7 +36,7 @@
         ' ' +
         searchCharacterLimit +
         ' ' +
-        ' characters'
+        'characters'
       "
     />
 
@@ -56,6 +55,7 @@
       "
       :message="filteredList.length + ' ' + ' total'"
       additionalClass="c-autocomplete__list-item-count"
+      ref="resultsCount"
     />
   </div>
 </template>

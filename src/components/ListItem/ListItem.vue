@@ -2,6 +2,8 @@
   <button
     @click="handleListItemClick(item)"
     class="c-list-item"
+    type="button"
+    role="list-item"
     :key="`${item.id}-${item.value}`"
   >
     {{ item.name }}
