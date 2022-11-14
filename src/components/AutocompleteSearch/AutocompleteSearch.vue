@@ -15,7 +15,6 @@
       placeholder="Search..."
       type="text"
       v-model="searchFilter"
-      @blur="handleCloseAutocompleteList"
       @focus="handleFocusAutocompleteInput"
       @input="handleChangeAutocompleteInput"
       @keyup="handleKeyUpAutocompleteInput"
@@ -55,7 +54,6 @@
       "
       :message="filteredList.length + ' ' + ' total'"
       additionalClass="c-autocomplete__list-item-count"
-      ref="resultsCount"
     />
   </div>
 </template>
