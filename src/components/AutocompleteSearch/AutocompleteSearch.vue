@@ -12,7 +12,7 @@
       "
       :id="searchCategory"
       :name="searchCategory"
-      placeholder="Search..."
+      :placeholder="'Search' + ' ' + searchCategory"
       type="text"
       v-model="searchFilter"
       @focus="handleFocusAutocompleteInput"
